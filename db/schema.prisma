@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = "mongodb"
+}
+
+// --------------------------------------
+
+model Bots {
+  id            String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  refresh_token String
+  name          String
+}
+
+model Channels {
+  id       String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  twitchId String
+  enabled  Boolean
+}
+
+model Users {
+  id           String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  twitchId     String
+  refreshToken String
+}
+
+model Variables {
+  id   String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name String
+}
+
+model GlobalCommands {
+  id               String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name             String
+  aliases          String[]
+  requiredRole     String[]
+  permittedUserIds String[]
+  enabled          Boolean
+}
+
+model DisabledCommands {
+  id        String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  commandId String
+  channelId String
+  enabled   Boolean
+}
+
+model Managers {
+  id        String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  twitchId  String
+  channelId String
+}
+
+model Roles {
+  id   String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name String
+}
+
+model Commands {
+  id               String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  channelId        String
+  name             String
+  aliases          String[]
+  replyText        String
+  requiredRole     String[]
+  permittedUserIds String[]
+  enabled          Boolean
+}
